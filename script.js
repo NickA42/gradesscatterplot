@@ -1,23 +1,31 @@
 var PenguinPromise = d3.json("classData.json")
 PenguinPromise.then(function(penguins)
 {
+    
+var alldays = d3.range(39)
   console.log(penguins) 
-    var alldata= penguins.map(getdata)
-    console.log(alldata)
+var alldata =  mapdata(penguins, 3)
+    console.log("hi", alldata)
     setup(alldata)
     drawpoints(alldata, xScale, yScale)
+    createbuttons()
+    
 },
 
 function(err)
                     {
     console.log("error", err)
 })
-var getdata = function(d, i)
+var mapdata = function(alldata, n)
+{
+ return alldata.map( function(d, i)
 {
     var x= i;
-    var y=  d.quizes[0].grade;
+    var y=  d.quizes[n].grade;
     return {x, y}
+})
 }
+
 var screen={width:900,height:700}
 
 var setup = function(alldata)
@@ -40,7 +48,7 @@ var setup = function(alldata)
          d3.max(alldata, function(p){return p.y})
     ])
      yScale.range([screen.height, 0])
-     
+    drawpoints(alldata, yScale, xScale) 
 }
 
 var drawpoints=function(alldata, xScale, yScale)
@@ -64,6 +72,4 @@ var drawpoints=function(alldata, xScale, yScale)
     })
     .attr("r",10)
     }
-
-
 
